@@ -1,24 +1,75 @@
-<!DOCTYPE html>
 <html>
 <head>
 
-<script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta itemprop="name" content="WebRTC code samples">
+    <meta id="theme-color" name="theme-color" content="#ffffff">
 
-function killMe(){
-	while(true) {
-		var da = Date();
-		console.log("Running infinite loop = "+ da);
-	}
-}
-			
-</script>
+    <base target="_blank">
 
+    <title>WebRuntime Test Pages</title>
+
+    <style>
+        h2 {
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        h3 {
+            border-top: none;
+        }
+
+        section {
+            border-bottom: 1px solid #eee;
+            margin: 0 0 1.5em 0;
+            padding: 0 0 1.5em 0;
+        }
+
+        section:last-child {
+            border-bottom: none;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
-<body>  
-<h1>Test Page for page unresponsive</h1>  
-<p ></p>
-<p >Run the infinite loop to test scenario  by clicking below button</p>  
-<input type = "button" onclick = "killMe()" value = "    Kill Function     ">  
+
+<body>
+<div id="container">
+
+    <h1>WebRuntime Test Pages</h1>
+    <section>
+        <h2 id="getusermedia"> Render Content</h2>
+        <p class="description"> Test HTML Contents</p>
+        <ul>
+            <li><a href="render/hung/"> To be filled </a></li>
+        </ul>
+
+		<h2 id="getusermedia"> Javascript Content</h2>
+        <p class="description"> Test Javascript Contents</p>
+        <ul>
+            <li><a href="render/hung/">Basic Render thread hung Issue</a></li>
+        </ul>
+
+        <h2 id="devices">Media Content:</h2>
+        <p class="description">Test media playback and Contents</p>
+        <ul>
+            <li><a href="render/hung/">To be filled</a></li>
+        </ul>
+
+        <h2 id="capture">WebRTC Content</h2>
+        <p class="description">Test WebRTC Contents</p>
+        <ul>
+            <li><a href="render/hung/">To be filled</a></li>
+        </ul>
+
+        <h2 id="capture">WebCodec Content</h2>
+        <p class="description">Test WebCodec Contents</p>
+        <ul>
+            <li><a href="render/hung/">To be filled</a></li>
+        </ul>
+    </section>
+</div>
 
 </body>
 </html>
