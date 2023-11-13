@@ -1,10 +1,8 @@
-﻿
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">  
-  <title>WebCodecs demo: Encoding and Decoding</title>
+  <title>WebCodecs: Encoding and Decoding</title>
   <style>
     canvas {
       padding: 10px;
@@ -15,9 +13,15 @@
 </head>
 
 <body>
-  <canvas id="src" width="640" height="480"></canvas>
-  <div id="dst"></div>
-  
+  <div style="display:inline-flex">
+    <div>
+	<h2>  Source Canvas </h2>
+	<canvas id="src" width="640px" height="360px"></canvas>
+    </div>
+    <div id="dst" style="position: absolute; left: 780px;">
+	<h2>  Dest Canvas </h2>
+    </div>
+  </div>
   <script>
     const foods = ['🍇','🍈','🍉','🍊','🍋','🍌','🍍','🥭','🍎','🍏','🍐','🍑','🍒','🍓','🥝','🍅','🥥','🥑','🍆','🥔','🥕','🌽','🌶️','🥒','🥬','🥦','🧄','🧅','🍄','🥜','🌰',
                    '🍞','🍞','🥐','🥖','🥨','🥯','🥞','🧇','🧀','🍖','🍗','🥩','🥓','🍔','🍟','🍕','🌭','🥪','🌮','🌯','🥙','🧆','🥚','🍳','🥘','🍲','🥣','🥗','🍿','🧈','🧂',
