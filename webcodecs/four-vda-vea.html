@@ -24,13 +24,6 @@
     </div>
 
     <div class="movie_item">
-      <button id="button1" onclick="playPause(id)"> Pause </button>
-      <button style="margin-left:320px;" id="button2" onclick="playPause(id)"> Pause </button>
-      <button style="margin-left:300px;" id="button3" onclick="playPause(id)"> Pause </button>
-      <button style="margin-left:300px;" id="button4" onclick="playPause(id)"> Pause </button>
-    </div>
-
-    <div class="movie_item">
       <canvas id="dst" width="320" height="240"></canvas>
       <canvas id="second" width="320" height="240"></canvas>
       <canvas id="third" width="320" height="240"></canvas>
@@ -71,21 +64,6 @@
           src: "fourth_src"
         }
       ]
-
-      function playPause(id) {
-        let configuration = configurations.find(val => val.button_id == id);
-        if (!configuration) {
-          console.error(" input config missing");
-          return;
-        }
-        configuration.keep_going = !configuration.keep_going;
-        let btn = document.getElementById(id);
-        if (configuration.keep_going) {
-          btn.innerText = "Pause";
-        } else {
-          btn.innerText = "Play";
-        }
-      }
 
       function delay(time_ms) {
         return new Promise((resolve) => {
