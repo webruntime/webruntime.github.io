@@ -1,6 +1,5 @@
 
-//let codec_string = "avc1.42001E";
-let codec_string = "avc1.42e01f";
+let codec_string = "avc1.42001E";
 
 function reportError(e) {
   // Report error to the main thread
