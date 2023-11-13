@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">  
+  <title>Video WebCodecs demo: Encoding and Decoding</title>
+  <style>
+    canvas {
+      padding: 10px;
+      background: gold;
+      margin: 5px;
+    }
+    video {
+      padding: 10px;
+      background: gold;
+      margin: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    var video = null;
+    
+    // Draw pretty animation on the source canvas
+    async function startDrawing() {
+      let src_cnv = document.getElementById("src");
+      var ctx = src_cnv.getContext('2d');
+      if (video === null) {
+        video = document.getElementById("src_video");
+      }
+	  
+      let drawOneFrame = function (time) {
+	  ctx.drawImage(video, 0, 0, src_cnv.width, src_cnv.height);
+          window.requestAnimationFrame(drawOneFrame);
+      }
+      window.requestAnimationFrame(drawOneFrame);
+    }
+    
+    function startWorker() {
+      let worker = new Worker('video-worker.js', { name: "Video worker"});
+      worker.onmessage = function(e) {
+        // Recreate worker in case of an error
+        console.log('Worker error: ' + e.data);
+        worker.terminate();
+        //startWorker();
+      };
+
+      // Capture animation track for the source canvas
+      let src_cnv = document.getElementById("src");
+      const fps = 25;
+      let stream = src_cnv.captureStream(fps);
+      const track = stream.getVideoTracks()[0]
+      media_processor = new MediaStreamTrackProcessor(track);
+      const reader = media_processor.readable;
+      
+      // Create a new destination canvas
+      const dst_cnv = document.createElement('canvas');
+      dst_cnv.width = src_cnv.width;
+      dst_cnv.height = src_cnv.height;
+      const dst = document.getElementById("dst");      
+      if (dst.firstChild)
+        dst.removeChild(dst.firstChild);
+      dst.appendChild(dst_cnv);
+      let offscreen = dst_cnv.transferControlToOffscreen();
+      worker.postMessage({
+        canvas : offscreen,
+        frame_source : reader,
+        fps : fps
+      }, [offscreen, reader]);
+    }
+   
+    function main() {
+      if (!("VideoFrame" in window)) {
+        document.body.innerHTML = "<h1>WebCodecs API is not supported.</h1>";
+        return;
+      }
+	  
+      startDrawing();
+      startWorker();
+    }
+	
+    document.body.onload = main;
+  </script>
+
+  <div style="display:inline-flex">
+    <div>
+	<h2>  Canvas with Video </h2>
+	<canvas id="src" width="640px" height="360px"></canvas>
+    </div>
+    <div id="dst" style="position: absolute; left: 780px;">
+	<h2>  WebCodecs with VDA/VEA </h2>
+    </div>
+  </div>
+
+  <div>
+    <h2>  Source HTML5 Video </h2>
+    <video id="src_video" src="./big_buck_bunny_720_stereo.mp4" width="640px" height="360px" controls>
+    </video>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>VDA: 3D Animation</title>
+</head>
+
+<body>
+<div id="title">
+</div>
+<section class="container">
+  <div class="viewport">
+    <div id="cube">
+      <figure class="front"><video width="500" height="500" muted autoplay loop src="./chrome.mp4" frameborder="0"></video></figure>
+      <figure class="back"><video width="500" height="500" muted autoplay loop src="./chrome.mp4" frameborder="0"></video></figure>
+      <figure class="right"><video width="500" height="500"  muted autoplay loop src="./chrome.mp4" frameborder="0"></video></figure>
+      <figure class="left"><video width="500" height="500" muted autoplay loop src="./chrome.mp4" frameborder="0"></video></figure>
+      <figure class="top"><video width="500" height="500" muted autoplay loop src="./chrome.mp4" frameborder="0"></video></figure>
+      <figure class="bottom"><video width="500" height="500"  muted loop autoplay src="./chrome.mp4" frameborder="0"></video></figure>
+    </div>
+  </div>
+</section>
+
+<style>
+@keyframes overlay {
+  30% {
+    left: 0;
+    width: 50%;
+  }
+  50% {
+    background: #00f;
+  }
+  80% {
+    left: 80%;
+    width: 20%;
+  }
+  100% {
+    left: 60%;
+    width: 40%;
+    background: #00f;
+  }
+}
+    figure#fashion {
+      display: inline-block;
+      position: relative;
+      font-size: 0;
+      margin: 0;
+    }
+    figure#fashion video {
+      width: 100%;
+    }
+    figure#fashion div {
+      width: 10%;
+      height: 100%;
+      background: #f00;
+      position: absolute;
+      top: 0;
+      mix-blend-mode: multiply;
+      left: 0;
+    }
+    video.playing ~ div#vid-cover {
+      animation: overlay 10s forwards;
+    }
+
+    figure#fashion video.playing ~ figcaption {
+      opacity: 1;
+    }
+    figure#fashion figcaption {
+      font-size: 50px;
+      font-family: Avenir, sans-serif;
+      color: white;
+      position: absolute;
+      width: 40%;
+      right: 0;
+      top: 30%;
+      text-transform: uppercase;
+      text-align: center;
+      opacity: 0;
+      transition: 3s 9s opacity;
+    }
+    figure#fashion figcaption span {
+      font-size: 40px;
+      text-transform: lowercase;
+      display: block;
+    }
+
+    rt url(https://fonts.googleapis.com/css?family=Syncopate:400,700);
+
+  @-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+  @-moz-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+  @keyframes AnimationName { 
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+  body {
+    font-family: Syncopate, Sans, sans-serif;
+    font-size: 2em;
+    font-weight: 200;
+    color: hotpink;
+    background-color: #1a001f;
+  }
+  #title {
+    margin-bottom: -50px;
+  }
+  h1 {
+    opacity: 1;
+  }
+  .container {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    perspective: 800px;
+  }
+  .viewport {
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    cursor: move;
+    -webkit-perspective: 1000px;
+    -webkit-perspective-origin: 50% 200px;
+    -webkit-transform: scale(0.75,0.75);
+    -moz-perspective: 1000px;
+    -moz-perspective-origin: 50% 200px;
+    -moz-transform: scale(0.75,0.75);
+    perspective: 1000px;
+    perspective-origin: 50% 200px;
+    transform: scale(0.75,0.75);
+  }
+  #cube {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    margin: auto;
+    transform-style: preserve-3d;
+    transform: rotateX( 45deg);
+    -webkit-animation: rotatecube 30s infinite;
+  }
+  @-webkit-keyframes rotatecube {
+    0% { -webkit-transform: rotateX(0deg) rotateY(360deg) rotateZ(90deg); }
+    25% { -webkit-transform: rotateX(90deg) rotateY(270deg) rotateZ(180deg); }
+    50% { -webkit-transform: rotateX(180deg) rotateY(180deg) rotateZ(0deg); }
+    75% { -webkit-transform: rotateX(270deg) rotateY(90deg) rotateZ(360deg); }
+    100% { -webkit-transform: rotateX(360deg) rotateY(0deg) rotateZ(270deg); }
+  }
+
+  #cube figure {
+    margin: 0;
+    width: 500px;
+    height: 500px;
+    display: block;
+    position: absolute;
+    border: 2px solid deeppink;
+    opacity: .78;
+    background-color: rgba(255, 234, 240, .1);
+    text-align: center;
+  }
+  #cube .front  { transform: rotateY(   0deg ) translateZ( 0px ); }
+  #cube .back   { transform: rotateX( 180deg ) rotateZ( 180deg ) translateZ( 500px ); }
+  #cube .right  { transform: rotateY( 90deg ) translateZ( 250px) translateX( 250px ); }
+  #cube .left   { transform: rotateY( -90deg ) translateZ( 250px ) translateX( -250px ); }
+  #cube .top    { transform: rotateX(  90deg ) translateZ( 250px ) translateY( -250px ); }
+  #cube .bottom { transform: rotateX( -90deg ) translateZ( 250px ) translateY( 250px ); }
+</style>
+
+<script>
+  var playbutton = document.getElementById("play-button");
+  var fashion = document.querySelector("#fashion video");
+  fashion.removeAttribute("controls");
+  playbutton.addEventListener("click", function() {
+    fashion.play();
+    fashion.classList.add("playing");
+  })
+</script>
+</body>
+
+</html>
+
