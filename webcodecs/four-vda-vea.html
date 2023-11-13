@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="origin-trial"
+    content="AqdVrVUYvDVFGDy0WVGjwLp1ofH4L/6mKam2vJr26dTaQpOQAZRuGY3mQwHInAxo6NqbLWelg4M1z5bpIYGTFAwAAAB3eyJvcmlnaW4iOiJodHRwczovL3dlYmNvZGVjcy1ibG9ncG9zdC1kZW1vLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiV2ViQ29kZWNzIiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZX0=">
+  <title>WebCodecs API demo: Encoding and Decoding</title>
+  <style>
+    canvas {
+      padding: 10px;
+      background: gold;
+    }
+  </style>
+</head>
+
+<body>
+  <center>
+    <h2 style="background-color:white;"><u>Multiple Encoding and Decoding:</u></h2>
+    <div class="movie_item">
+      <canvas id="first_src" width="320" height="240"></canvas>
+      <canvas id="second_src" width="320" height="240"></canvas>
+      <canvas id="third_src" width="320" height="240"></canvas>
+      <canvas id="fourth_src" width="320" height="240"></canvas>
+    </div>
+
+    <div class="movie_item">
+      <button id="button1" onclick="playPause(id)"> Pause </button>
+      <button style="margin-left:320px;" id="button2" onclick="playPause(id)"> Pause </button>
+      <button style="margin-left:300px;" id="button3" onclick="playPause(id)"> Pause </button>
+      <button style="margin-left:300px;" id="button4" onclick="playPause(id)"> Pause </button>
+    </div>
+
+    <div class="movie_item">
+      <canvas id="dst" width="320" height="240"></canvas>
+      <canvas id="second" width="320" height="240"></canvas>
+      <canvas id="third" width="320" height="240"></canvas>
+      <canvas id="fourth" width="320" height="240"></canvas>
+    </div>
+
+    <img id="scream" width="50" height="50" src="pattern.png" alt="The Scream" style="display: none;">
+    <img id="scream2" width="50" height="50" src="rocket.png" alt="The Scream2" style="display: none;">
+    <img id="scream3" width="50" height="50" src="tree.png" alt="The Scream3" style="display: none;">
+    <script>
+      let configurations = [
+        {
+          id: "dst",
+          button_id: "button1",
+          codec: "avc1.42001E",
+          keep_going: true,
+          src: "first_src"
+        },
+        {
+          id: "second",
+          button_id: "button2",
+          codec: "avc1.42001E",
+          keep_going: true,
+          src: "second_src"
+        },
+        {
+          id: "third",
+          button_id: "button3",
+          codec: "avc1.42001E",
+          keep_going: true,
+          src: "third_src"
+        },
+        {
+          id: "fourth",
+          button_id: "button4",
+          codec: "avc1.42001E",
+          keep_going: true,
+          src: "fourth_src"
+        }
+      ]
+
+      function playPause(id) {
+        let configuration = configurations.find(val => val.button_id == id);
+        if (!configuration) {
+          console.error(" input config missing");
+          return;
+        }
+        configuration.keep_going = !configuration.keep_going;
+        let btn = document.getElementById(id);
+        if (configuration.keep_going) {
+          btn.innerText = "Pause";
+        } else {
+          btn.innerText = "Play";
+        }
+      }
+
+      function delay(time_ms) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, time_ms);
+        });
+      }
+
+
+      async function startDrawing(src) {
+        let cnv = document.getElementById(src);
+        var ctx = cnv.getContext('2d', { alpha: false });
+
+        ctx.fillStyle = "white";
+        let width = cnv.width;
+        let height = cnv.height;
+        let cx = width / 2;
+        let cy = height / 2;
+        let r = Math.min(width, height) / 5;
+        let drawOneFrame = function (time) {
+          let angle = Math.PI * 2 * (time / 5000);
+          let scale = 1 + 0.3 * Math.sin(Math.PI * 2 * (time / 7000));
+          ctx.save();
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.translate(cx, cy);
+          ctx.rotate(angle);
+          ctx.scale(scale, scale);
+
+          if (src === "first_src") {
+            ctx.font = '20px Verdana';
+            ctx.fillStyle = 'black';
+            const text = "WebCodecs 1";
+            const size = ctx.measureText(text).width;
+            ctx.fillText(text, -size / 2, 0);
+            ctx.restore();
+          }
+          else if (src === "second_src") {
+            let img = document.getElementById("scream");
+            ctx.drawImage(img, 10, 10);
+            ctx.restore();
+          }
+          else if (src === "third_src") {
+            ctx.font = '20px Verdana';
+            ctx.fillStyle = 'black';
+            const text = "WebCodecs 2";
+            const size = ctx.measureText(text).width;
+            ctx.fillText(text, -size / 2, 0);
+            ctx.restore();
+          }
+          else if (src === "fourth_src") {
+            let img = document.getElementById("scream3");
+            ctx.drawImage(img, 10, 10);
+            ctx.restore();
+          }
+
+          window.requestAnimationFrame(drawOneFrame);
+        }
+        window.requestAnimationFrame(drawOneFrame);
+      }
+
+
+      async function captureAndEncode(src, codec_string, id, processChunk) {
+        let cnv = document.getElementById(src);
+        let fps = 25;
+        let pending_outputs = 0;
+        let frame_counter = 0;
+        let stream = cnv.captureStream(fps);
+        let val = configurations.find(element => element.id === id);
+
+        //let constraints = { audio: false, video: {width: 1280, height: 720, frameRate: 30}};
+        //stream = await window.navigator.mediaDevices.getUserMedia(constraints);
+        const track = stream.getVideoTracks()[0]
+        media_processor = new MediaStreamTrackProcessor(track);
+        const reader = media_processor.readable.getReader();
+
+        const init = {
+          output: (chunk, config) => {
+            pending_outputs--;
+            processChunk(chunk, config);
+          },
+          error: (e) => {
+            console.log(e.message);
+            val.keep_going = false;
+            //   keep_going_val = false;
+          }
+        };
+
+
+        const config = {
+          codec: codec_string,
+          width: cnv.width,
+          height: cnv.height,
+          bitrate: 1000000,
+          avc: { format: "annexb" },
+          framerate: fps,
+          hardwareAcceleration: "prefer-hardware",
+        };
+        if (codec_string === "avc1.42001E") {
+          codec_string.avc = { format: "annexb" }
+        }
+
+        let encoder = new VideoEncoder(init);
+        encoder.configure(config);
+
+        async function readFrame() {
+          const result = await reader.read();
+          let frame = result.value;
+
+          // Too many frames in flight, encoder is overwhelmed
+          // let's drop this frame.
+          if (val.keep_going && pending_outputs <= 5) {
+            frame_counter++;
+            pending_outputs++;
+            const insert_keyframe = false;// = (frame_counter % 30) == 0;
+            encoder.encode(frame, { keyFrame: insert_keyframe });
+            frame.close();
+          } else {
+            frame.close();
+          }
+
+          setTimeout(readFrame, 1);
+        };
+
+        readFrame();
+      }
+
+
+      function startDecodingAndRendering(destination) {
+        let cnv = document.getElementById(destination);
+        let ctx = cnv.getContext("2d", { alpha: false });
+        let ready_frames = [];
+        let underflow = true;
+        let time_base = 0;
+
+        function calculateTimeTillNextFrame(timestamp) {
+          if (time_base == 0)
+            time_base = performance.now();
+          let media_time = performance.now() - time_base;
+          return Math.max(0, (timestamp / 1000) - media_time);
+        }
+
+        async function renderFrame() {
+          if (ready_frames.length == 0) {
+            underflow = true;
+            return;
+          }
+          let frame = ready_frames.shift();
+          underflow = false;
+
+          // Based on the frame's timestamp calculate how much of real time waiting
+          // is needed before showing the next frame.
+          let time_till_next_frame = calculateTimeTillNextFrame(frame.timestamp);
+          await delay(time_till_next_frame);
+          ctx.drawImage(frame, 0, 0);
+          frame.close();
+
+          // Immediately schedule rendering of the next frame
+          setTimeout(renderFrame, 0);
+        }
+
+        function handleFrame(frame) {
+          ready_frames.push(frame);
+          if (underflow) {
+            underflow = false;
+            setTimeout(renderFrame, 0);
+          }
+        }
+
+        const init = {
+          output: handleFrame,
+          error: (e) => {
+            console.log(e.message);
+          }
+        };
+
+        let decoder = new VideoDecoder(init);
+        return decoder;
+      }
+
+      function main() {
+        if (!("VideoFrame" in window)) {
+          document.body.innerHTML = "<h1>WebCodecs API is not supported.</h1>";
+          return;
+        }
+
+        for (let configuration of configurations) {
+          startDrawing(configuration.src);
+          let decoder = startDecodingAndRendering(configuration.id);
+          captureAndEncode(configuration.src, configuration.codec, configuration.id, (chunk, md) => {
+            let config = md.decoderConfig ?? md;
+            if (config && decoder.state == 'unconfigured') {
+              console.log("decoder reconfig");
+              decoder.configure(config);
+            }
+
+            decoder.decode(chunk);
+          });
+        }
+      }
+
+      document.body.onload = main;
+    </script>
+
+  </center>
+</body>
+
+</html>
