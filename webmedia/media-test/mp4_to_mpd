@@ -1,0 +1,18 @@
+#!/bin/bash
+if [ "x$1" == "x" ]; then
+  echo "Usage $0 filename"
+  exit 1
+fi
+
+# Single bitrate
+ffmpeg -i $1 -codec copy -f dash -min_seg_duration 30 -use_template 1 -use_timeline 1 -init_seg_name '$RepresentationID$-init.m4s' -media_seg_name '$RepresentationID$-$Time$.m4s' ${1%.*}.mpd
+
+# Multi bitrate
+if false; then
+ffmpeg -re -i $1 -map 0 -map 0 -c:a libfdk_aac -c:v libx264 \
+-b:v:0 800k -b:v:1 300k -s:v:1 320x170 -profile:v:1 baseline \
+-profile:v:0 main -bf 1 -keyint_min 120 -g 120 -sc_threshold 0 \
+-b_strategy 0 -ar:a:1 22050 -use_timeline 1 -use_template 1 \
+-window_size 5 -adaptation_sets "id=0,streams=v id=1,streams=a" \
+-f dash /path/to/out.mpd
+fi

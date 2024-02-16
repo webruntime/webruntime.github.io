@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MPD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="urn:mpeg:dash:schema:mpd:2011"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xsi:schemaLocation="urn:mpeg:DASH:schema:MPD:2011 http://standards.iso.org/ittf/PubliclyAvailableStandards/MPEG-DASH_schema_files/DASH-MPD.xsd"
+	profiles="urn:mpeg:dash:profile:isoff-live:2011"
+	type="static"
+	mediaPresentationDuration="PT2M38.1S"
+	minBufferTime="PT7.3S">
+	<ProgramInformation>
+	</ProgramInformation>
+	<Period id="0" start="PT0.0S">
+		<AdaptationSet id="0" contentType="video" segmentAlignment="true" bitstreamSwitching="true" frameRate="30000/1001" lang="und">
+			<Representation id="0" mimeType="video/mp4" codecs="avc1.64001e" bandwidth="802119" width="720" height="404" frameRate="30000/1001">
+				<SegmentTemplate timescale="30000" initialization="$RepresentationID$-init.m4s" media="$RepresentationID$-$Time$.m4s" startNumber="1">
+					<SegmentTimeline>
+						<S t="0" d="59059" />
+						<S d="79079" />
+						<S d="64064" />
+						<S d="83083" />
+						<S d="62062" />
+						<S d="66066" />
+						<S d="250250" />
+						<S d="171171" />
+						<S d="106106" />
+						<S d="193193" />
+						<S d="122122" />
+						<S d="62062" />
+						<S d="106106" />
+						<S d="144144" />
+						<S d="71071" />
+						<S d="31031" />
+						<S d="54054" />
+						<S d="42042" />
+						<S d="28028" />
+						<S d="29029" />
+						<S d="54054" />
+						<S d="28028" r="1" />
+						<S d="98098" />
+						<S d="53053" />
+						<S d="75075" />
+						<S d="113113" />
+						<S d="36036" />
+						<S d="64064" />
+						<S d="82082" />
+						<S d="67067" />
+						<S d="75075" />
+						<S d="64064" />
+						<S d="114114" />
+						<S d="198198" />
+						<S d="208208" />
+						<S d="156156" />
+						<S d="48048" />
+						<S d="57057" />
+						<S d="112112" />
+						<S d="47047" />
+						<S d="78078" />
+						<S d="100100" />
+						<S d="49049" />
+						<S d="81081" />
+						<S d="57057" />
+						<S d="102102" />
+						<S d="58058" />
+						<S d="54054" />
+						<S d="81081" />
+						<S d="101101" />
+						<S d="61061" />
+						<S d="109109" />
+						<S d="110110" />
+						<S d="100100" />
+					</SegmentTimeline>
+				</SegmentTemplate>
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet id="1" contentType="audio" segmentAlignment="true" bitstreamSwitching="true" lang="eng">
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" bandwidth="125588" audioSamplingRate="44100">
+				<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2" />
+				<SegmentTemplate timescale="44100" initialization="$RepresentationID$-init.m4s" media="$RepresentationID$-$Time$.m4s" startNumber="1">
+					<SegmentTimeline>
+						<S t="0" d="83968" />
+						<S d="116736" />
+						<S d="94208" />
+						<S d="121856" />
+						<S d="91136" />
+						<S d="97280" />
+						<S d="367616" />
+						<S d="251904" />
+						<S d="155648" />
+						<S d="284672" />
+						<S d="179200" />
+						<S d="91136" />
+						<S d="155648" />
+						<S d="211968" />
+						<S d="104448" />
+						<S d="46080" />
+						<S d="79872" />
+						<S d="61440" />
+						<S d="40960" />
+						<S d="43008" />
+						<S d="78848" />
+						<S d="41984" />
+						<S d="40960" />
+						<S d="144384" />
+						<S d="77824" />
+						<S d="110592" />
+						<S d="165888" />
+						<S d="53248" />
+						<S d="94208" />
+						<S d="120832" />
+						<S d="98304" />
+						<S d="110592" />
+						<S d="94208" />
+						<S d="166912" />
+						<S d="291840" />
+						<S d="306176" />
+						<S d="229376" />
+						<S d="70656" />
+						<S d="83968" />
+						<S d="164864" />
+						<S d="68608" />
+						<S d="114688" />
+						<S d="147456" />
+						<S d="72704" />
+						<S d="118784" />
+						<S d="83968" />
+						<S d="149504" />
+						<S d="86016" />
+						<S d="78848" />
+						<S d="119808" />
+						<S d="148480" />
+						<S d="90112" />
+						<S d="159744" />
+						<S d="161792" />
+						<S d="150558" />
+					</SegmentTimeline>
+				</SegmentTemplate>
+			</Representation>
+		</AdaptationSet>
+	</Period>
+</MPD>
