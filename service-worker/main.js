@@ -7,7 +7,7 @@ if ('serviceWorker' in navigator) {
 const cacheBtn = document.getElementById('cacheBtn');
 const videoPlayer = document.getElementById('videoPlayer');
 const status = document.getElementById('status');
-const VIDEO_URL = 'sample.mp4';
+const VIDEO_URL = 'Ghoomar_Padmaavat_720p_Mp4Hindi.mp4';
 
 cacheBtn.addEventListener('click', async function () {
   const cache = await caches.open('video-cache');
