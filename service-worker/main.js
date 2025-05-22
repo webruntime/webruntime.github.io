@@ -46,5 +46,14 @@ window.addEventListener('load', async function () {
     cacheBtn.disabled = true;
     videoInput.disabled = true;
     status.textContent = 'Playing cached video. App works offline!';
+  } else {
+    const file = 'Ghoomar_Padmaavat_720p_Mp4Hindi.mp4';
+    if (file) {
+      videoURL = URL.createObjectURL(file);
+      videoPlayer.src = videoURL;
+      videoFile = file;
+      cacheBtn.disabled = false;
+      status.textContent = '';
+    }
   }
 });
