@@ -5,13 +5,18 @@ const STATIC_FILES = [
   '/main.js',
   '/sw.js',
   '/manifest.json',
-  '/Ghoomar_Padmaavat_720p_Mp4Hindi.mp4'
+  '/Ghoomar_Padmaavat_720p_Mp4Hindi.mp4',
+  '/icon-192.png',
+  '/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => cache.addAll(STATIC_FILES))
+      .catch(err => {
+        console.error("Cache addAll failed:", err);
+      })
   );
 });
 
