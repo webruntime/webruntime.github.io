@@ -6,8 +6,10 @@ if ('serviceWorker' in navigator) {
 
 const cacheBtn = document.getElementById('cacheBtn');
 const removeBtn = document.getElementById('removeBtn');
-const videoPlayer = document.getElementById('videoPlayer');
 const status = document.getElementById('status');
+const cachedStatus = document.getElementById('cachedStatus');
+const serverVideo = document.getElementById('serverVideo');
+const cachedVideo = document.getElementById('cachedVideo');
 const VIDEO_URL = 'Ghoomar_Padmaavat_720p_Mp4Hindi.mp4';
 
 cacheBtn.addEventListener('click', async function () {
@@ -20,6 +22,7 @@ cacheBtn.addEventListener('click', async function () {
       status.textContent = 'Video cached for offline use!';
       cacheBtn.disabled = true;
       removeBtn.disabled = false;
+      loadCachedVideo();
     } else {
       status.textContent = 'Failed to fetch video for caching.';
     }
@@ -36,20 +39,31 @@ removeBtn.addEventListener('click', async function () {
   setTimeout(() => window.location.reload(), 1000);
 });
 
-// On page load, check if video is cached
-window.addEventListener('load', async function () {
+// Loads the cached video or disables the player if not present
+async function loadCachedVideo() {
   const cache = await caches.open('video-cache');
   const cachedRes = await cache.match('/cached-video');
   if (cachedRes) {
     const blob = await cachedRes.blob();
-    videoPlayer.src = URL.createObjectURL(blob);
+    cachedVideo.src = URL.createObjectURL(blob);
     cacheBtn.disabled = true;
     removeBtn.disabled = false;
-    status.textContent = 'Playing cached video. App works offline!';
+    cachedStatus.textContent = 'Playing cached video. App works offline!';
+    cachedVideo.controls = true;
+    cachedVideo.style.opacity = 1;
+    cachedVideo.style.filter = "";
+    cachedVideo.style.borderColor = "#ffe259";
   } else {
     cacheBtn.disabled = false;
     removeBtn.disabled = true;
-    videoPlayer.src = VIDEO_URL;
-    status.textContent = '';
+    cachedStatus.textContent = 'No cached video. Use "Cache Video for Offline".';
+    cachedVideo.src = "";
+    cachedVideo.controls = false;
+    cachedVideo.style.opacity = 0.5;
+    cachedVideo.style.filter = "grayscale(60%)";
+    cachedVideo.style.borderColor = "#fcb69f";
   }
-});
+}
+
+// On page load, check if video is cached
+window.addEventListener('load', loadCachedVideo);
