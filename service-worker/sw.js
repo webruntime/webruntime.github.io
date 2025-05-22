@@ -4,7 +4,8 @@ const STATIC_FILES = [
   '/index.html',
   '/main.js',
   '/sw.js',
-  '/manifest.json'
+  '/manifest.json',
+  '/Ghoomar_Padmaavat_720p_Mp4Hindi.mp4'
 ];
 
 self.addEventListener('install', (event) => {
@@ -23,7 +24,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Offline fallback for static files
+  // Fallback to cache for static files
   event.respondWith(
     caches.match(event.request)
       .then((response) => response || fetch(event.request))

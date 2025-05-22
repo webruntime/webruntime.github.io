@@ -7,11 +7,13 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <h1>Offline Video PWA Demo</h1>
-  <input type="file" accept="video/*" id="videoInput">
-  <button id="cacheBtn" disabled>Cache Video for Offline</button>
+  <h1>Offline Video PWA Demo (Static File)</h1>
+  <button id="cacheBtn">Cache Video for Offline</button>
   <div>
-    <video id="videoPlayer" width="480" controls></video>
+    <video id="videoPlayer" width="480" controls>
+      <source src="Ghoomar_Padmaavat_720p_Mp4Hindi.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
   </div>
   <div id="status"></div>
   <script src="main.js"></script>

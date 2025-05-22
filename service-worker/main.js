@@ -4,36 +4,26 @@ if ('serviceWorker' in navigator) {
     .then(() => console.log('Service Worker Registered'));
 }
 
-// DOM elements
-const videoInput = document.getElementById('videoInput');
 const cacheBtn = document.getElementById('cacheBtn');
 const videoPlayer = document.getElementById('videoPlayer');
 const status = document.getElementById('status');
-
-let videoURL = '';
-let videoFile = null;
-
-videoInput.addEventListener('change', function (e) {
-  const file = e.target.files[0];
-  if (file) {
-    videoURL = URL.createObjectURL(file);
-    videoPlayer.src = videoURL;
-    videoFile = file;
-    cacheBtn.disabled = false;
-    status.textContent = '';
-  }
-});
+const VIDEO_URL = 'sample.mp4';
 
 cacheBtn.addEventListener('click', async function () {
-  if (!videoFile) return;
   const cache = await caches.open('video-cache');
-  const blobURL = URL.createObjectURL(videoFile);
-
-  // Add to cache using a fixed URL (simulate "download")
-  await cache.put('/cached-video', new Response(videoFile));
-  localStorage.setItem('cachedVideoName', videoFile.name);
-
-  status.textContent = 'Video cached for offline use!';
+  // Fetch the video and add to cache
+  try {
+    const response = await fetch(VIDEO_URL, { cache: "reload" });
+    if (response.ok) {
+      await cache.put('/cached-video', response.clone());
+      localStorage.setItem('cachedVideoName', VIDEO_URL);
+      status.textContent = 'Video cached for offline use!';
+    } else {
+      status.textContent = 'Failed to fetch video for caching.';
+    }
+  } catch (err) {
+    status.textContent = 'Error while caching video: ' + err;
+  }
 });
 
 // On page load, check if video is cached
@@ -44,16 +34,6 @@ window.addEventListener('load', async function () {
     const blob = await cachedRes.blob();
     videoPlayer.src = URL.createObjectURL(blob);
     cacheBtn.disabled = true;
-    videoInput.disabled = true;
     status.textContent = 'Playing cached video. App works offline!';
-  } else {
-    const file = 'Ghoomar_Padmaavat_720p_Mp4Hindi.mp4';
-    if (file) {
-      videoURL = URL.createObjectURL(file);
-      videoPlayer.src = videoURL;
-      videoFile = file;
-      cacheBtn.disabled = false;
-      status.textContent = '';
-    }
   }
 });

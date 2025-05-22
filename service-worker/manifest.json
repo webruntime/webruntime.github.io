@@ -1,11 +1,11 @@
 {
-  "name": "Offline Video PWA Demo",
+  "name": "Offline Video PWA Demo (Static File)",
   "short_name": "VideoPWA",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#222",
   "theme_color": "#222",
-  "description": "A simple PWA for offline video playback",
+  "description": "A simple PWA for offline video playback using a static file",
   "icons": [
     {
       "src": "icon-192.png",
