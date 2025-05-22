@@ -1,0 +1,21 @@
+{
+  "name": "Offline Video PWA Demo",
+  "short_name": "VideoPWA",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#222",
+  "theme_color": "#222",
+  "description": "A simple PWA for offline video playback",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
