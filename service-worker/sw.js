@@ -3,6 +3,7 @@ const STATIC_FILES = [
   '/',
   '/index.html',
   '/main.js',
+  '/main.css',
   '/sw.js',
   '/manifest.json',
   '/Ghoomar_Padmaavat_720p_Mp4Hindi.mp4',
