@@ -1,17 +1,16 @@
 // Register Service Worker
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("sw.js")
-    .then(() => console.log("Service Worker Registered"));
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(() => console.log('Service Worker Registered'));
 }
 
-const cacheBtn = document.getElementById("cacheBtn");
-const removeBtn = document.getElementById("removeBtn");
-const status = document.getElementById("status");
-const cachedStatus = document.getElementById("cachedStatus");
-const serverVideo = document.getElementById("serverVideo");
-const cachedVideo = document.getElementById("cachedVideo");
-const VIDEO_URL = "Transformers_1280x720.mp4";
+const cacheBtn = document.getElementById('cacheBtn');
+const removeBtn = document.getElementById('removeBtn');
+const status = document.getElementById('status');
+const cachedStatus = document.getElementById('cachedStatus');
+const serverVideo = document.getElementById('serverVideo');
+const cachedVideo = document.getElementById('cachedVideo');
+const VIDEO_URL = '../webcodecs/vda/270/Ghoomar_Padmaavat.mp4';
 
 let progressInterval = null;
 let serverVideoLoaded = false;
@@ -24,10 +23,10 @@ function updateCacheBtnState() {
 
 // Show progress spinner while caching
 function showProgressAnimation() {
-  let dots = "";
+  let dots = '';
   status.innerHTML = `<span class="progress-spinner"></span> Caching video, please wait`;
   progressInterval = setInterval(() => {
-    dots = dots.length < 3 ? dots + "." : "";
+    dots = dots.length < 3 ? dots + '.' : '';
     status.innerHTML = `<span class="progress-spinner"></span> Caching video, please wait${dots}`;
   }, 500);
 }
@@ -38,43 +37,40 @@ function hideProgressAnimation() {
 }
 
 // Listen for server video load
-serverVideo.addEventListener("loadeddata", () => {
+serverVideo.addEventListener('loadeddata', () => {
   serverVideoLoaded = true;
-  serverVideo.controls = true;
   updateCacheBtnState();
 });
 
 // Also handle error (e.g., network failure)
-serverVideo.addEventListener("error", () => {
+serverVideo.addEventListener('error', () => {
   serverVideoLoaded = false;
-  serverVideo.controls = false;
-  serverVideo.src = "";
   updateCacheBtnState();
 });
 
 // Loads the cached video or disables the player if not present
 async function loadCachedVideo() {
-  const cache = await caches.open("video-cache");
-  const cachedRes = await cache.match("/cached-video");
+  const cache = await caches.open('video-cache');
+  const cachedRes = await cache.match('/cached-video');
   if (cachedRes) {
     cachedVideoExists = true;
     const blob = await cachedRes.blob();
     cachedVideo.src = URL.createObjectURL(blob);
     cacheBtn.disabled = true;
     removeBtn.disabled = false;
-    cachedStatus.textContent = "Playing cached video. App works offline!";
-    cachedStatus.classList.add("big");
+    cachedStatus.textContent = 'Playing cached video. App works offline!';
+    cachedStatus.classList.add('big');
     cachedVideo.controls = true;
     cachedVideo.style.opacity = 1;
     cachedVideo.style.filter = "";
     cachedVideo.style.borderColor = "#ffe259";
   } else {
     cachedVideoExists = false;
+    // cacheBtn.enabled state depends on serverVideoLoaded
     updateCacheBtnState();
     removeBtn.disabled = true;
-    cachedStatus.textContent =
-      'No cached video. Use "Cache Video for Offline".';
-    cachedStatus.classList.remove("big");
+    cachedStatus.textContent = 'No cached video. Use "Cache Video for Offline".';
+    cachedStatus.classList.remove('big');
     cachedVideo.src = "";
     cachedVideo.controls = false;
     cachedVideo.style.opacity = 0.5;
@@ -84,44 +80,44 @@ async function loadCachedVideo() {
 }
 
 // Cache the video file
-cacheBtn.addEventListener("click", async function () {
+cacheBtn.addEventListener('click', async function () {
   cacheBtn.disabled = true;
   removeBtn.disabled = true;
   showProgressAnimation();
-  const cache = await caches.open("video-cache");
+  const cache = await caches.open('video-cache');
   try {
     const response = await fetch(VIDEO_URL, { cache: "reload" });
     if (response.ok) {
-      await cache.put("/cached-video", response.clone());
-      localStorage.setItem("cachedVideoName", VIDEO_URL);
+      await cache.put('/cached-video', response.clone());
+      localStorage.setItem('cachedVideoName', VIDEO_URL);
       hideProgressAnimation();
-      status.textContent = "Video cached for offline use!";
+      status.textContent = 'Video cached for offline use!';
       cacheBtn.disabled = true;
       removeBtn.disabled = false;
       // Re-check cached status and update state/UI
       loadCachedVideo();
     } else {
       hideProgressAnimation();
-      status.textContent = "Failed to fetch video for caching.";
+      status.textContent = 'Failed to fetch video for caching.';
       updateCacheBtnState();
       removeBtn.disabled = false;
     }
   } catch (err) {
     hideProgressAnimation();
-    status.textContent = "Error while caching video: " + err;
+    status.textContent = 'Error while caching video: ' + err;
     updateCacheBtnState();
     removeBtn.disabled = false;
   }
 });
 
 // Remove cached video
-removeBtn.addEventListener("click", async function () {
-  const cache = await caches.open("video-cache");
-  await cache.delete("/cached-video");
-  localStorage.removeItem("cachedVideoName");
-  status.textContent = "Cached video removed. Reloading...";
+removeBtn.addEventListener('click', async function () {
+  const cache = await caches.open('video-cache');
+  await cache.delete('/cached-video');
+  localStorage.removeItem('cachedVideoName');
+  status.textContent = 'Cached video removed. Reloading...';
   setTimeout(() => window.location.reload(), 1000);
 });
 
 // On page load, check if video is cached
-window.addEventListener("load", loadCachedVideo);
+window.addEventListener('load', loadCachedVideo);
