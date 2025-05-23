@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Demo - Offline Video PWA</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="main.css">
-</head>
-<body>
-  <header>
-    <h1>Offline Video PWA Demo</h1>
-  </header>
-  <div class="button-bar">
-    <button id="cacheBtn">Cache Video for Offline</button>
-    <button id="removeBtn">Remove Cached Video</button>
-  </div>
-  <div class="video-container">
-    <div class="video-box">
-      <div class="video-label">Server Video (Requires Network)</div>
-      <video id="serverVideo" controls>
-        <source src="Ghoomar_Padmaavat_720p_Mp4Hindi.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Demo - Offline Video PWA</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Offline Video PWA Demo</h1>
+    </header>
+    <div class="button-bar">
+      <button id="cacheBtn">Cache Video for Offline</button>
+      <button id="removeBtn">Remove Cached Video</button>
     </div>
-    <div class="video-box">
-      <div class="video-label">Cached Video (Works Offline)</div>
-      <video id="cachedVideo" controls>
-        <!-- Will be set by JS if cached -->
-        Your browser does not support the video tag.
-      </video>
-      <div id="cachedStatus"></div>
+    <div class="video-container">
+      <div class="video-box">
+        <div class="video-label">Server Video (Requires Network)</div>
+        <video id="serverVideo" controls>
+          <source src="Transformers_1280x720.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="video-box">
+        <div class="video-label">Cached Video (Works Offline)</div>
+        <video id="cachedVideo" controls>
+          <!-- Will be set by JS if cached -->
+          Your browser does not support the video tag.
+        </video>
+        <div id="cachedStatus"></div>
+      </div>
+      <div id="status"></div>
     </div>
-    <div id="status"></div>
-  </div>
-  <script src="main.js"></script>
-</body>
+    <script src="main.js"></script>
+  </body>
 </html>
