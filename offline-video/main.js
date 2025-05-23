@@ -127,15 +127,21 @@ function handleCacheVideo(src) {
   if (cachingVideos.has(src)) return; // Already in progress
 
   cachingVideos.add(src);
+  console.log(`Caching started for: ${src}`); // Debugging
   generateCachedTable(); // Show spinner
 
   if (navigator.serviceWorker.controller) {
-    // Use MessageChannel for completion callback
     const channel = new MessageChannel();
     channel.port1.onmessage = event => {
-      cachingVideos.delete(src);
-      generateCachedTable(); // Remove spinner
-      updateCachedTable();   // Update cache state
+      if (event.data.success) {
+        console.log(`Caching completed for: ${src}`); // Debugging
+        cachingVideos.delete(src);
+        updateCachedTable(); // Update cache state
+      } else {
+        console.error(`Caching failed for: ${src}`, event.data.error); // Debugging
+        cachingVideos.delete(src);
+        generateCachedTable(); // Remove spinner
+      }
     };
     navigator.serviceWorker.controller.postMessage({
       type: 'CACHE_VIDEO',
@@ -176,6 +182,7 @@ async function updateCachedTable() {
         (path.startsWith('270/') || path.startsWith('720/')) && path.endsWith('.mp4')
       )
   );
+  console.log('Cached videos:', cachedSet); // Debugging
   generateCachedTable(cachedSet);
 }
 

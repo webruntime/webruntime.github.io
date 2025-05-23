@@ -6,9 +6,8 @@ body {
   color: #222;
 }
 
-.container {
+.top-container {
   display: flex;
-  height: 100vh;
   align-items: flex-start;
   gap: 0rem; /* Reduced from 2rem to 1rem */
   background: #f3f5fa;
@@ -44,9 +43,42 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
   text-shadow: 0 2px 10px rgba(79, 140, 255, 0.08);
   border-bottom: 2.5px solid lch(59.2% 39.52 17.86); /* Subtle underline for separation */
+  border-radius: 2px;
+  padding-bottom: 0.5rem;
+  transition: font-size 0.2s, text-shadow 0.2s;
+}
+
+.bottom-pane {
+  flex: 1 1 0;
+  background: linear-gradient(135deg, #f2eaff 0%, #e7e1fc 100%);
+  border-radius: 18px;
+  box-shadow: 0 6px 24px 0 rgba(79, 140, 255, 0.10), 0 2px 8px 0 rgba(46, 54, 80, 0.05);
+  border: 1.5px solid #d7e7ff;
+  padding: 2rem;
+  margin: 0 1rem 0 1rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 350px;
+  min-height: 30px;
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.bottom-pane-header {
+  text-align: center;
+  font-size: 2.1rem;                  /* Increased font size */
+  font-weight: 700;                   /* Bolder */
+  margin-bottom: 2rem;
+  margin-top: 0;
+  letter-spacing: 0.04em;
+  color: #25355a;
+  background: linear-gradient(90deg, hsl(219, 94%, 43%) 0%, hwb(346 16% 24%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 10px rgba(79, 140, 255, 0.08);
   border-radius: 2px;
   padding-bottom: 0.5rem;
   transition: font-size 0.2s, text-shadow 0.2s;

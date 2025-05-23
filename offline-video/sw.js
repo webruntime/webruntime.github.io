@@ -32,14 +32,14 @@ self.addEventListener('message', async event => {
     const url = event.data.url;
     try {
       const cache = await caches.open(CACHE_NAME);
-      const response = await fetch(url, {cache: 'reload'});
+      const response = await fetch(url, { cache: 'reload' });
       await cache.put(url, response.clone());
-      event.ports[0].postMessage({success: true, url});
+      event.ports[0].postMessage({ success: true, url });
       // Notify all clients for UI updates
       const clients = await self.clients.matchAll();
       clients.forEach(client => client.postMessage('cache-updated'));
     } catch (e) {
-      event.ports[0].postMessage({success: false, url, error: e.message});
+      event.ports[0].postMessage({ success: false, url, error: e.message });
     }
   }
 });
