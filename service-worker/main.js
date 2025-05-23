@@ -39,12 +39,18 @@ function hideProgressAnimation() {
 // Listen for server video load
 serverVideo.addEventListener('loadeddata', () => {
   serverVideoLoaded = true;
+  serverVideo.controls = true;
+  if (!serverVideo.src || serverVideo.src !== VIDEO_URL) {
+    serverVideo.src = VIDEO_URL;
+  }
   updateCacheBtnState();
 });
 
 // Also handle error (e.g., network failure)
 serverVideo.addEventListener('error', () => {
   serverVideoLoaded = false;
+  serverVideo.controls = false;
+  serverVideo.src = '';
   updateCacheBtnState();
 });
 
@@ -66,7 +72,6 @@ async function loadCachedVideo() {
     cachedVideo.style.borderColor = "#ffe259";
   } else {
     cachedVideoExists = false;
-    // cacheBtn.enabled state depends on serverVideoLoaded
     updateCacheBtnState();
     removeBtn.disabled = true;
     cachedStatus.textContent = 'No cached video. Use "Cache Video for Offline".';
