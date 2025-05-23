@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Offline Video App</title>
+  <link rel="icon" type="image/png" sizes="256x256" href="icon-256.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <h1>Offline Video Application</h1>
+  <label for="videoSelect">Select Video (with Resolution):</label>
+  <select id="videoSelect">
+    <optgroup label="270p">
+      <option value="270/Big_buck_bunny.mp4">270p - Big Buck Bunny</option>
+      <option value="270/Dil_Cheez_Tujhe_Dedi.mp4">270p - Dil Cheez Tujhe Dedi</option>
+      <option value="270/Ghoomar_Padmaavat.mp4">270p - Ghoomar (Padmaavat)</option>
+      <option value="270/Soch_Na_Sake_Airlift.mp4">270p - Soch Na Sake (Airlift)</option>
+      <option value="270/Tum_Bin_Sanam_Re.mp4">270p - Tum Bin (Sanam Re)</option>
+    </optgroup>
+    <optgroup label="720p">
+      <option value="720/Big_buck_bunny.mp4">720p - Big Buck Bunny</option>
+      <option value="720/Dil_Cheez_Tujhe_Dedi.mp4">720p - Dil Cheez Tujhe Dedi</option>
+      <option value="720/Ghoomar_Padmaavat.mp4">720p - Ghoomar (Padmaavat)</option>
+      <option value="720/Soch_Na_Sake_Airlift.mp4">720p - Soch Na Sake (Airlift)</option>
+      <option value="720/Tum_Bin_Sanam_Re.mp4">720p - Tum Bin (Sanam Re)</option>
+    </optgroup>
+  </select>
+  <video id="videoPlayer" width="640" controls>
+    <source src="270/Big_buck_bunny.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <p id="status"></p>
+  <script src="main.js"></script>
+</body>
+</html>

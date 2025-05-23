@@ -1,0 +1,24 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 2rem;
+  background: #f9f9f9;
+  color: #222;
+}
+h1 {
+  font-size: 2rem;
+  color: #2a7ae2;
+}
+#status {
+  margin-top: 1rem;
+  color: green;
+}
+video {
+  display: block;
+  margin-top: 2rem;
+  background: #000;
+}
+label, select {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  display: block;
+}
