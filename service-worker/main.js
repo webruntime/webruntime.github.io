@@ -10,7 +10,7 @@ const status = document.getElementById('status');
 const cachedStatus = document.getElementById('cachedStatus');
 const serverVideo = document.getElementById('serverVideo');
 const cachedVideo = document.getElementById('cachedVideo');
-const VIDEO_URL = '../webcodecs/vda/270/Ghoomar_Padmaavat.mp4';
+const VIDEO_URL = 'Ghoomar_Padmaavat.mp4';
 
 let progressInterval = null;
 let serverVideoLoaded = false;
