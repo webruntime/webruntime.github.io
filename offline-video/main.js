@@ -46,10 +46,26 @@ function generateVideoTable() {
   });
 }
 
-function generateCachedTable(cachedSet = new Set()) {
+async function generateCachedTable(cachedSet = new Set()) {
+  if (!('caches' in window)) {
+    console.error('Cache API is not supported in this environment.');
+    return;
+  }
+
+  let cache = await caches.open(CACHE_NAME); // Open the cache
+  let requests = await cache.keys(); // Get all cached requests
+  cachedSet = new Set( // Use the existing cachedSet parameter
+    requests
+      .map(req => req.url.split('/').slice(-2).join('/')) // Extract video paths
+      .filter(path =>
+        (path.startsWith('270/') || path.startsWith('720/')) && path.endsWith('.mp4') // Filter valid video paths
+      )
+  );
+
   RESOLUTIONS.forEach(res => {
     const row = document.getElementById(res.cachedRowId);
-    row.innerHTML = '';
+    row.innerHTML = ''; // Clear the row content
+
     VIDEOS.forEach(video => {
       const td = document.createElement('td');
       td.style.width = "20%";
@@ -58,17 +74,8 @@ function generateCachedTable(cachedSet = new Set()) {
       div.className = 'cached-thumb';
       div.dataset.src = key;
 
-      // Spinner during caching
-      if (cachingVideos.has(key) && !cachedSet.has(key)) {
-        div.innerHTML = `
-          <div class="cached-thumb-icon" style="position:relative;">
-            <div class="caching-spinner">
-              <div class="spinner"></div>
-            </div>
-            <div class="resolution-overlay">${res.label}</div>
-          </div>
-        `;
-      } else if (cachedSet.has(key)) {
+      if (cachedSet.has(key)) {
+        // If video is cached, display thumbnail and enable playback
         div.classList.add('cached');
         div.innerHTML = `
           <div class="cached-thumb-icon">
@@ -84,12 +91,14 @@ function generateCachedTable(cachedSet = new Set()) {
           highlightSelectedCachedThumb(this);
         });
       } else {
+        // If video is not cached, display placeholder
         div.innerHTML = `
           <div class="cached-thumb-icon">
             <div class="resolution-overlay">${res.label}</div>
           </div>
         `;
       }
+
       td.appendChild(div);
       row.appendChild(td);
     });
