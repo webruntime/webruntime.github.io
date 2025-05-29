@@ -1,29 +1,52 @@
 const CACHE_NAME = 'offline-video-cache-v9';
 
 self.addEventListener('install', event => {
-  self.skipWaiting();
+  event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener('activate', event => {
-  self.clients.claim();
+  event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.destination === 'video') {
+  const request = event.request;
+
+  // Handle video caching
+  if (request.destination === 'video') {
     event.respondWith(
-      caches.open(CACHE_NAME).then(cache =>
-        cache.match(event.request).then(response =>
-          response ||
-          fetch(event.request).then(networkResponse => {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          })
-        )
-      )
+      caches.open(CACHE_NAME).then(async cache => {
+        const cachedResponse = await cache.match(request);
+        if (cachedResponse) {
+          return cachedResponse; // Serve from cache if available
+        }
+
+        // Fetch the full video response (remove Range header)
+        const modifiedRequest = new Request(request.url, {
+          method: request.method,
+          headers: [...request.headers].filter(([key]) => key.toLowerCase() !== 'range'),
+          mode: request.mode,
+          credentials: request.credentials,
+          redirect: request.redirect,
+        });
+
+        return fetch(modifiedRequest).then(response => {
+          if (!response.ok || response.status !== 200) {
+            throw new Error(`Failed to fetch video: ${response.statusText}`);
+          }
+          cache.put(request, response.clone()); // Cache the full response
+          return response;
+        });
+      })
     );
     return;
   }
-  event.respondWith(fetch(event.request));
+
+  // Default fetch behavior for non-video requests
+  event.respondWith(
+    caches.match(request).then(cachedResponse => {
+      return cachedResponse || fetch(request);
+    })
+  );
 });
 
 // Handle video caching on demand
